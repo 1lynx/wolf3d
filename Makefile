@@ -6,7 +6,7 @@
 #    By: cchampda <cchampda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/27 11:23:48 by nrandria          #+#    #+#              #
-#    Updated: 2016/06/10 11:39:03 by cchampda         ###   ########.fr        #
+#    Updated: 2016/06/28 13:49:17 by cchampda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = libft/libft.a
 
 SRC =	srcs/main.c		\
 
-EXE = fractol
+EXE = wolf
 
 GCC = gcc -Wall -Wextra -Werror -framework OpenGL -framework SDL2 -O3 -Ofast
 
