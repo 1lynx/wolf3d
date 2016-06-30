@@ -1,26 +1,112 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <SDL/SDL.h>
+#include "header/wolf.h"
 
-int main( int argc, char *argv[ ] )
+void calcul(t_info *e, int worldMap[mapWidth][mapHeight])
 {
-    SDL_Surface *screen;
-    if( SDL_Init( SDL_INIT_VIDEO ) == -1 )
-    {
-        printf( "Can't init SDL:  %s\n", SDL_GetError( ) );
-        return EXIT_FAILURE;
-    }
+	e->x = 0;
+	while(e->x < XSZ)
+	{
+		re_calc(e);
+		if (e->rayDirX < 0)
+		{
+			e->stepX = -1;
+			e->sideDistX = (e->rayPosX - e->mapX) * e->deltaDistX;
+		}
+		else
+		{
+			e->stepX = 1;
+			e->sideDistX = (e->mapX + 1.0 - e->rayPosX) * e->deltaDistX;
+		}
+		if (e->rayDirY < 0)
+		{
+			e->stepY = -1;
+			e->sideDistY = (e->rayPosY - e->mapY) * e->deltaDistY;
+		}
+		else
+		{
+			e->stepY = 1;
+			e->sideDistY = (e->mapY + 1.0 - e->rayPosY) * e->deltaDistY;
+		}
 
-    atexit( SDL_Quit );
-    screen = SDL_SetVideoMode( 640, 480, 16, SDL_HWSURFACE );
+		while (e->hit == 0)
+		{
+  			if (e->sideDistX < e->sideDistY)
+  			{
+				e->sideDistX += e->deltaDistX;
+				e->mapX += e->stepX;
+				e->side = 0;
+  			}
+  			else
+  			{
+				e->sideDistY += e->deltaDistY;
+				e->mapY += e->stepY;
+				e->side = 1;
+  			}
+  			if (worldMap[e->mapX][e->mapY] > 0)
+				e->hit = 1;
+		}
 
-    if( screen == NULL )
-    {
-        printf( "Can't set video mode: %s\n", SDL_GetError( ) );
-        return EXIT_FAILURE;
-    }
+		if (e->side == 0)
+			e->perpWallDist = (e->mapX - e->rayPosX + (1 - e->stepX) / 2) / e->rayDirX;
+		else
+			e->perpWallDist = (e->mapY - e->rayPosY + (1 - e->stepY) / 2) / e->rayDirY;
+		e->lineHeight = (int)(YSZ / e->perpWallDist);
+		e->drawStart = -e->lineHeight / 2 + YSZ / 2;
+		if (e->drawStart < 0)
+			e->drawStart = 0;
+		e->drawEnd = e->lineHeight / 2 + YSZ / 2;
+		if (e->drawEnd >= YSZ)
+			e->drawEnd = YSZ - 1;
+		line_color(e);
+		e->x++;
+	}
+}
 
-    SDL_Delay( 3000 );
+int main(int ac, char **av)
+{
+	t_info *e;
+	*av = NULL;
+	ac = 0;
+	int worldMap[mapWidth][mapHeight]=
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
 
-    return EXIT_SUCCESS;
+	e = malloc(sizeof(t_info));
+	ft_memset(e, 0, sizeof(t_info));
+	e->loop = 0;
+	set_up(e);
+	set_up_value(e);
+	while (!e->loop)
+	{
+		timer(e);
+		poll_event(e, worldMap);
+		calcul(e, worldMap);
+ 		SDL_RenderPresent(e->rend);
+	}
+    SDL_DestroyWindow(e->win);
+    SDL_Quit();
+    return(0);
 }

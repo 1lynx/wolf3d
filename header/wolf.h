@@ -17,8 +17,8 @@
 #include "../libft/libft.h"
 #include <stdio.h>
 
-# define XSZ 512
-# define YSZ 384
+# define XSZ 700
+# define YSZ 500
 # define mapWidth 24
 # define mapHeight 24
 
@@ -36,11 +36,16 @@ typedef struct s_info
 	double planeY;
 	double newtime;
 	double oldtime;
+	double frametime;
 	double cameraX;
 	double rayPosX;
 	double rayPosY;
 	double rayDirX;
 	double rayDirY;
+	double moveSpeed;
+	double rotSpeed;
+	double oldDirX;
+	double oldPlaneX;
 	int mapX;
 	int mapY;
 	double sideDistX;
@@ -61,6 +66,10 @@ typedef struct s_info
 #endif
 
 int set_up(t_info *e);
-void init(t_info *e);
+void timer(t_info *e);
+void poll_event(t_info *e, int worldMap[mapWidth][mapHeight]);
+void 	set_up_value(t_info *e);
+void re_calc(t_info *e);
 void calcul(t_info *e, int worldMap[mapWidth][mapHeight]);
 void line_color(t_info *e);
+void modify_tab(int worldMap[mapWidth][mapHeight]);

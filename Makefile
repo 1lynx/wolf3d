@@ -18,7 +18,7 @@ SRC =	srcs/main.c		\
 
 EXE = wolf
 
-GCC = gcc -Wall -Wextra -Werror -framework OpenGL -framework SDL2 -O3 -Ofast
+GCC = gcc main.c tool.c key.c -o wolf -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
 
 
 all: $(NAME)
@@ -27,7 +27,7 @@ $(NAME):
 		@echo "\033[33mLibrary's compilation\033[0m"
 		@make -C libft/
 		@echo "\033[33mProject's compilation\033[0m"
-		@$(GCC) $(SRC) $(NAME)
+		@$(GCC) $(NAME)
 		@echo "\033[33mAll compilation done\033[0m" "\033[32m [ok] \033[32m"
 
 clean:
