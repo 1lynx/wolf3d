@@ -50,10 +50,3 @@ void line_color(t_info *e)
   SDL_SetRenderDrawColor(e->rend, 255, 255, 255, 255);
 	SDL_RenderDrawLine(e->rend, e->x, e->drawEnd, e->x, YSZ);
 }
-
-void modify_tab(int worldMap[mapWidth][mapHeight])
-{
-  worldMap[12][16] = 3;
-  worldMap[12][17] = 3;
-  worldMap[12][18] = 3;
-}

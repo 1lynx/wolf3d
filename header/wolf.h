@@ -21,6 +21,8 @@
 # define YSZ 500
 # define mapWidth 24
 # define mapHeight 24
+# define FDF_ERROR { ft_putstr("Error, invalid file"); exit(-1); }
+
 
 typedef struct s_info
 {
@@ -61,15 +63,20 @@ typedef struct s_info
 	int drawStart;
 	int drawEnd;
 	int lineHeight;
+	int			**tab;
 }				t_info;
 
-#endif
 
 int set_up(t_info *e);
 void timer(t_info *e);
-void poll_event(t_info *e, int worldMap[mapWidth][mapHeight]);
+void poll_event(t_info *e);
 void 	set_up_value(t_info *e);
 void re_calc(t_info *e);
-void calcul(t_info *e, int worldMap[mapWidth][mapHeight]);
+void calcul(t_info *e);
 void line_color(t_info *e);
-void modify_tab(int worldMap[mapWidth][mapHeight]);
+int		*get_int_tab(char *str, t_info *s);
+void	open_file(t_info *i, char *filename);
+int		count_col(char **tab, t_info *s);
+void	check_char(char c);
+
+#endif

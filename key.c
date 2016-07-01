@@ -1,6 +1,6 @@
 #include "header/wolf.h"
 
-void poll_event(t_info *e, int worldMap[mapWidth][mapHeight])
+void poll_event(t_info *e)
 {
   while(SDL_PollEvent(&e->event))
   {
@@ -8,16 +8,16 @@ void poll_event(t_info *e, int worldMap[mapWidth][mapHeight])
         e->loop = 1;
     if (e->event.key.keysym.sym == SDLK_UP)
     {
-      if(!(worldMap[(int)(e->posX + e->dirX * e->moveSpeed)][(int)(e->posY)]))
+      if(!(e->tab[(int)(e->posX + e->dirX * e->moveSpeed)][(int)(e->posY)]))
           e->posX += e->dirX * e->moveSpeed;
-      if(!(worldMap[(int)(e->posX)][(int)(e->posY + e->dirY * e->moveSpeed)]))
+      if(!(e->tab[(int)(e->posX)][(int)(e->posY + e->dirY * e->moveSpeed)]))
           e->posY += e->dirY * e->moveSpeed;
     }
     if (e->event.key.keysym.sym == SDLK_DOWN)
     {
-      if(!(worldMap[(int)(e->posX + e->dirX * e->moveSpeed)][(int)(e->posY)]))
+      if(!(e->tab[(int)(e->posX + e->dirX * e->moveSpeed)][(int)(e->posY)]))
           e->posX -= e->dirX * e->moveSpeed;
-      if(!(worldMap[(int)(e->posX)][(int)(e->posY + e->dirY * e->moveSpeed)]))
+      if(!(e->tab[(int)(e->posX)][(int)(e->posY + e->dirY * e->moveSpeed)]))
           e->posY -= e->dirY * e->moveSpeed;
     }
     if (e->event.key.keysym.sym == SDLK_RIGHT)
@@ -38,10 +38,10 @@ void poll_event(t_info *e, int worldMap[mapWidth][mapHeight])
       e->planeX = e->planeX * cos(e->rotSpeed) - e->planeY * sin(e->rotSpeed);
       e->planeY = e->oldPlaneX * sin(e->rotSpeed) + e->planeY * cos(e->rotSpeed);
     }
-    if (e->event.key.keysym.sym == SDLK_a)
-    {
-      modify_tab(worldMap);
-    }
+    // if (e->event.key.keysym.sym == SDLK_a)
+    // {
+    //   modify_tab(e->tab);
+    // }
 
 
   }
