@@ -17,8 +17,8 @@ int set_up(t_info *e)
 
 void 	set_up_value(t_info *e)
 {
-	e->posX = 22;
-	e->posY = 12;
+	e->posX = 99;
+	e->posY = 4;
 	e->dirX = -1;
 	e->dirY = 0;
 	e->planeX = 0;

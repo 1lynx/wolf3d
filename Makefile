@@ -18,7 +18,7 @@ SRC =	srcs/main.c		\
 
 EXE = wolf
 
-GCC = gcc main.c tool.c key.c openfile.c -o wolf -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
+GCC = gcc main.c tool.c key.c calcul.c openfile.c -o wolf -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
 
 
 all: $(NAME)

@@ -19,8 +19,8 @@
 
 # define XSZ 700
 # define YSZ 500
-# define mapWidth 24
-# define mapHeight 24
+# define mapWidth 8
+# define mapHeight 100
 # define FDF_ERROR { ft_putstr("Error, invalid file"); exit(-1); }
 
 
@@ -78,5 +78,10 @@ int		*get_int_tab(char *str, t_info *s);
 void	open_file(t_info *i, char *filename);
 int		count_col(char **tab, t_info *s);
 void	check_char(char c);
+void turn_left(t_info *e);
+void turn_right(t_info* e);
+void move_back(t_info *e);
+void move_forward(t_info *e);
+
 
 #endif
